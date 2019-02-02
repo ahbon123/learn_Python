@@ -1,0 +1,13 @@
+#https://blog.csdn.net/qq_34510308/article/details/85297800
+
+#读取中文路径
+def cv_imread(file_path):
+    cv_img = cv2.imdecode(np.fromfile(file_path, dtype=np.uint8),-1)
+    return cv_img
+file_path = 'C:/测试/Test.jpg'
+img = cv_imread(file_path)
+print(img)
+
+#保存中文路径
+def cv_imwrite(savePath,tem):
+    cv2.imencode('.jpg',tem)[1].tofile(savePath)  # 保存图片
