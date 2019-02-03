@@ -1,3 +1,59 @@
+#https://stackoverflow.com/questions/15793349/how-to-concatenate-three-excels-files-xlsx-using-python
+
+#use openpyxl
+
+import pandas as pd
+
+# filenames
+excel_names = ["xlsx1.xlsx", "xlsx2.xlsx", "xlsx3.xlsx"]
+
+# read them in
+excels = [pd.ExcelFile(name) for name in excel_names]
+
+# turn them into dataframes
+frames = [x.parse(x.sheet_names[0], header=None,index_col=None) for x in excels]
+
+# delete the first row for all frames except the first
+# i.e. remove the header row -- assumes it's the first
+frames[1:] = [df[1:] for df in frames[1:]]
+
+# concatenate them..
+combined = pd.concat(frames)
+
+# write it out
+combined.to_excel("c.xlsx", header=False, index=False)
+
+#use xlrd and xlwt
+import xlwt
+import xlrd
+
+wkbk = xlwt.Workbook()
+outsheet = wkbk.add_sheet('Sheet1')
+
+xlsfiles = [r'C:\foo.xlsx', r'C:\bar.xlsx', r'C:\baz.xlsx']
+
+outrow_idx = 0
+for f in xlsfiles:
+    # This is all untested; essentially just pseudocode for concept!
+    insheet = xlrd.open_workbook(f).sheets()[0]
+    for row_idx in xrange(insheet.nrows):
+        for col_idx in xrange(insheet.ncols):
+            outsheet.write(outrow_idx, col_idx, 
+                           insheet.cell_value(row_idx, col_idx))
+        outrow_idx += 1
+wkbk.save(r'C:\combined.xls')
+
+'''
+If your files all have a header line, you probably don't want to repeat that, 
+so you could modify the code above to look more like this:
+'''
+firstfile = True # Is this the first sheet?
+for f in xlsfiles:
+    insheet = xlrd.open_workbook(f).sheets()[0]
+    for row_idx in xrange(0 if firstfile else 1, insheet.nrows):
+        pass # processing; etc
+    firstfile = False # We're done with the first sheet.
+    
 #https://zhuanlan.zhihu.com/p/31541902 
 
 import pandas as pd
