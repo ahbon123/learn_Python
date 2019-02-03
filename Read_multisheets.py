@@ -27,3 +27,13 @@ sheet_to_df_map = pd.read_excel(file_name, sheet_name=None)
 
 # for pandas version < 0.21.0
 sheet_to_df_map = pd.read_excel(file_name, sheetname=None)
+
+#https://stackoverflow.com/questions/42887663/reading-multiple-tabs-from-excel-in-different-dataframes
+
+xl = pd.read_excel('Unique.xlsx', sheetname=None)
+xl_dict = {}
+sheetname_list = ['blah1', 'blah2', 'blah3']
+for sheet in sheetname_list:
+    xl_dict[sheet] = pd.read_excel('Unique.xlsx', sheetname=sheet)
+
+xl = pd.read_excel('Unique.xlsx', sheetname=sheetname_list)
