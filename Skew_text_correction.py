@@ -116,3 +116,5 @@ if __name__ == '__main__':
     # cv2.imwrite("../test/recified.png", rotate, [int(cv2.IMWRITE_PNG_COMPRESSION), 0])
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+# https://blog.csdn.net/wsp_1138886114/article/details/83374333
